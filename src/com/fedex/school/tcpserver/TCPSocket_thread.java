@@ -30,7 +30,7 @@ public class TCPSocket_thread extends Thread
 
                 gui.setOutputStatus(this.getName() + "_>" + input);
 
-                OutputStream theoutstream = socketcomm.getOutputStream();
+                /*OutputStream theoutstream = socketcomm.getOutputStream();
                 DataOutputStream outstream = new DataOutputStream(theoutstream);
                 try {
                     outstream.writeBytes(input.toUpperCase() + "\n");
@@ -39,7 +39,7 @@ public class TCPSocket_thread extends Thread
                     server.clientConnessi--;
                     gui.setClientStatus("Client " + this.getName() + " disconnesso\t[" + server.clientConnessi + "]");
                     break;
-                }
+                }*/
 
                 if (input.equals("fine")) {
                     socketcomm.close();

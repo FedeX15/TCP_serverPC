@@ -12,6 +12,8 @@ package com.fedex.school.tcpserver;
 public class GUI extends javax.swing.JFrame {
 
     TCPSocket_server server;
+    String client;
+    
     /**
      * Creates new form GUI
      * @param server
@@ -19,6 +21,7 @@ public class GUI extends javax.swing.JFrame {
     public GUI(TCPSocket_server server) {
         initComponents();
         this.server = server;
+        this.client = null;
     }
 
     /**
@@ -35,6 +38,10 @@ public class GUI extends javax.swing.JFrame {
         statuslbl = new javax.swing.JLabel();
         clientlbl = new javax.swing.JLabel();
         outputlbl = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        guiListaClient = new javax.swing.JList();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,6 +58,25 @@ public class GUI extends javax.swing.JFrame {
 
         outputlbl.setText("                            ");
 
+        guiListaClient.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        guiListaClient.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                guiListaClientValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(guiListaClient);
+
+        jButton1.setText("Invia");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -58,12 +84,18 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 272, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(statuslbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(avviaBtn))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(statuslbl)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(clientlbl)
                             .addComponent(outputlbl))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -73,13 +105,19 @@ public class GUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(statuslbl)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(statuslbl)
+                    .addComponent(avviaBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clientlbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(outputlbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(avviaBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -87,13 +125,27 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void avviaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avviaBtnActionPerformed
-        new Thread() {
-            @Override
-            public void run() {
-                server.avviaServer();
-            }
-        }.start();
+        if (server.avviato) {
+            this.avviaBtn.setText("Avvia Server");
+            server.chiudiServer();
+        } else {
+            this.avviaBtn.setText("Arresta Server");
+            new Thread() {
+                @Override
+                public void run() {
+                    server.avviaServer();
+                }
+            }.start();
+        }
     }//GEN-LAST:event_avviaBtnActionPerformed
+
+    private void guiListaClientValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_guiListaClientValueChanged
+        this.client = (String) this.guiListaClient.getSelectedValue();
+    }//GEN-LAST:event_guiListaClientValueChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     public void setServerStatus(String status) {
         statuslbl.setText(status);
@@ -107,9 +159,17 @@ public class GUI extends javax.swing.JFrame {
         outputlbl.setText(status);
     }
     
+    public void updateLista(String[] lista) {
+        this.guiListaClient.setListData(lista);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton avviaBtn;
     private javax.swing.JLabel clientlbl;
+    private javax.swing.JList guiListaClient;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel outputlbl;
     private javax.swing.JLabel statuslbl;
     // End of variables declaration//GEN-END:variables
