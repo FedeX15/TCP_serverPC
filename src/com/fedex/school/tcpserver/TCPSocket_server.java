@@ -11,6 +11,7 @@ public class TCPSocket_server
     GUI gui;
     public int clientConnessi;
     public String[] listaClient;
+    public Socket[] listaClientSocket;
     public boolean avviato;
     private ServerSocket socket;
     
@@ -19,6 +20,7 @@ public class TCPSocket_server
         gui.setVisible(true);
         clientConnessi = 0;
         listaClient = new String[1000];
+        listaClientSocket = new Socket[1000];
         gui.updateLista(listaClient);
         avviato = false;
     }
@@ -34,13 +36,14 @@ public class TCPSocket_server
         avviato = true;
         try {
             socket = new ServerSocket(8888);
-            gui.setServerStatus("SERVER ONLINE");
+            gui.setServerStatus("SERVER ONLINE [" + socket.getLocalSocketAddress().toString() + "]");
             Socket socketcomm = null;
             do {
                 try {
                     socketcomm = socket.accept();
                     //socket.setSoTimeout(10000);
                     this.listaClient[clientConnessi] = socketcomm.getInetAddress().toString();
+                    this.listaClientSocket[clientConnessi] = socketcomm;
                     gui.updateLista(listaClient);
                     this.clientConnessi++;
                     gui.setClientStatus("Client " + socketcomm.getInetAddress().toString() + " connesso\t[" + this.clientConnessi + "]");
@@ -63,5 +66,20 @@ public class TCPSocket_server
             socket.close();
             gui.setServerStatus("SERVER OFFLINE");
         } catch (IOException ex) {}
+    }
+    
+    public void send(String client, String text) {
+        for (int i = 0; i < clientConnessi; i++) {
+            if (listaClient[i].equals(client)) {
+                try {
+                    OutputStream theoutstream = listaClientSocket[i].getOutputStream();
+                    DataOutputStream outstream = new DataOutputStream(theoutstream);
+                    outstream.writeBytes(text + "\n");
+                } catch (NullPointerException ex) {
+                } catch (IOException ex) {
+                }
+            }
+        }
+        
     }
 }

@@ -27,27 +27,17 @@ public class TCPSocket_thread extends Thread
 
                 BufferedReader readerbuff = new BufferedReader(new InputStreamReader(instream));
                 input = readerbuff.readLine();
-
-                gui.setOutputStatus(this.getName() + "_>" + input);
-
-                /*OutputStream theoutstream = socketcomm.getOutputStream();
-                DataOutputStream outstream = new DataOutputStream(theoutstream);
-                try {
-                    outstream.writeBytes(input.toUpperCase() + "\n");
-                } catch (NullPointerException ex) {
+                if (input == null) {
                     socketcomm.close();
                     server.clientConnessi--;
                     gui.setClientStatus("Client " + this.getName() + " disconnesso\t[" + server.clientConnessi + "]");
-                    break;
-                }*/
-
-                if (input.equals("fine")) {
-                    socketcomm.close();
-                    server.clientConnessi--;
-                    gui.setClientStatus("Client " + this.getName() + " disconnesso\t[" + server.clientConnessi + "]");
-                    break;
+                } else {
+                    gui.setOutputStatus(this.getName() + "_>" + input);
                 }
-            } catch (IOException ex) {}
-        } while (true);
+                sleep(1000);
+            } catch (IOException ex) {
+            } catch (InterruptedException ex) {
+            }
+        } while (!socketcomm.isClosed());
     }
 }
