@@ -2,6 +2,7 @@ package com.fedex.school.tcpserver;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 /**
  * @author Federico Matteoni
@@ -10,8 +11,9 @@ public class TCPSocket_server
 {
     GUI gui;
     public int clientConnessi;
-    public String[] listaClient;
-    public Socket[] listaClientSocket;
+    /*public String[] listaClient;
+    public Socket[] listaClientSocket;*/
+    public HashMap<InetAddress, Socket> listaClient;
     public boolean avviato;
     private ServerSocket socket;
     
@@ -19,8 +21,9 @@ public class TCPSocket_server
         gui = new GUI(this);
         gui.setVisible(true);
         clientConnessi = 0;
-        listaClient = new String[1000];
-        listaClientSocket = new Socket[1000];
+        /*listaClient = new String[1000];
+        listaClientSocket = new Socket[1000];*/
+        listaClient = new HashMap<>();
         gui.updateLista(listaClient);
         avviato = false;
     }
@@ -42,8 +45,9 @@ public class TCPSocket_server
                 try {
                     socketcomm = socket.accept();
                     //socket.setSoTimeout(10000);
-                    this.listaClient[clientConnessi] = socketcomm.getInetAddress().toString();
-                    this.listaClientSocket[clientConnessi] = socketcomm;
+                    /*this.listaClient[clientConnessi] = socketcomm.getInetAddress().toString();
+                    this.listaClientSocket[clientConnessi] = socketcomm;*/
+                    this.listaClient.put(socketcomm.getInetAddress(), socketcomm);
                     gui.updateLista(listaClient);
                     this.clientConnessi++;
                     gui.setClientStatus("Client " + socketcomm.getInetAddress().toString() + " connesso\t[" + this.clientConnessi + "]");
@@ -60,7 +64,7 @@ public class TCPSocket_server
     public void chiudiServer() {
         try {
             avviato = false;
-            listaClient = new String[1000];
+            listaClient = new HashMap<>();
             clientConnessi = 0;
             gui.updateLista(listaClient);
             socket.close();
@@ -68,18 +72,13 @@ public class TCPSocket_server
         } catch (IOException ex) {}
     }
     
-    public void send(String client, String text) {
-        for (int i = 0; i < clientConnessi; i++) {
-            if (listaClient[i].equals(client)) {
-                try {
-                    OutputStream theoutstream = listaClientSocket[i].getOutputStream();
-                    DataOutputStream outstream = new DataOutputStream(theoutstream);
-                    outstream.writeBytes(text + "\n");
-                } catch (NullPointerException ex) {
-                } catch (IOException ex) {
-                }
-            }
+    public void send(InetAddress client, String text) {
+        try {
+            OutputStream theoutstream = listaClient.get(client).getOutputStream();
+            DataOutputStream outstream = new DataOutputStream(theoutstream);
+            outstream.writeBytes(text + "\n");
+        } catch (NullPointerException ex) {
+        } catch (IOException ex) {
         }
-        
     }
 }

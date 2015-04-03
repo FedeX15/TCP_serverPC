@@ -5,6 +5,9 @@
  */
 package com.fedex.school.tcpserver;
 
+import java.net.*;
+import java.util.*;
+
 /**
  *
  * @author fedex
@@ -12,7 +15,7 @@ package com.fedex.school.tcpserver;
 public class GUI extends javax.swing.JFrame {
 
     TCPSocket_server server;
-    String client;
+    InetAddress client;
     
     /**
      * Creates new form GUI
@@ -140,7 +143,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_avviaBtnActionPerformed
 
     private void guiListaClientValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_guiListaClientValueChanged
-        this.client = (String) this.guiListaClient.getSelectedValue();
+        this.client = (InetAddress) this.guiListaClient.getSelectedValue();
     }//GEN-LAST:event_guiListaClientValueChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -159,8 +162,8 @@ public class GUI extends javax.swing.JFrame {
         outputlbl.setText(status);
     }
     
-    public void updateLista(String[] lista) {
-        this.guiListaClient.setListData(lista);
+    public void updateLista(HashMap<InetAddress, Socket> lista) {
+        this.guiListaClient.setListData(lista.keySet().toArray());
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

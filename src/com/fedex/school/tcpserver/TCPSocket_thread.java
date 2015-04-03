@@ -30,6 +30,8 @@ public class TCPSocket_thread extends Thread
                 if (input == null) {
                     socketcomm.close();
                     server.clientConnessi--;
+                    server.listaClient.remove(socketcomm.getInetAddress());
+                    gui.updateLista(server.listaClient);
                     gui.setClientStatus("Client " + this.getName() + " disconnesso\t[" + server.clientConnessi + "]");
                 } else {
                     gui.setOutputStatus(this.getName() + "_>" + input);
