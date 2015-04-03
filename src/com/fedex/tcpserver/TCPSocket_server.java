@@ -1,4 +1,4 @@
-package com.fedex.school.tcpserver;
+package com.fedex.tcpserver;
 
 import java.io.*;
 import java.net.*;
@@ -11,8 +11,6 @@ public class TCPSocket_server
 {
     GUI gui;
     public int clientConnessi;
-    /*public String[] listaClient;
-    public Socket[] listaClientSocket;*/
     public HashMap<InetAddress, Socket> listaClient;
     public boolean avviato;
     private ServerSocket socket;
@@ -21,8 +19,6 @@ public class TCPSocket_server
         gui = new GUI(this);
         gui.setVisible(true);
         clientConnessi = 0;
-        /*listaClient = new String[1000];
-        listaClientSocket = new Socket[1000];*/
         listaClient = new HashMap<>();
         gui.updateLista(listaClient);
         avviato = false;
@@ -44,9 +40,6 @@ public class TCPSocket_server
             do {
                 try {
                     socketcomm = socket.accept();
-                    //socket.setSoTimeout(10000);
-                    /*this.listaClient[clientConnessi] = socketcomm.getInetAddress().toString();
-                    this.listaClientSocket[clientConnessi] = socketcomm;*/
                     this.listaClient.put(socketcomm.getInetAddress(), socketcomm);
                     gui.updateLista(listaClient);
                     this.clientConnessi++;

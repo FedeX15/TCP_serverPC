@@ -1,4 +1,4 @@
-package com.fedex.school.tcpserver;
+package com.fedex.tcpserver;
 
 import java.io.*;
 import java.net.*;
