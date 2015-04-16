@@ -35,11 +35,12 @@ public class GUI extends javax.swing.JFrame {
         avviaBtn = new javax.swing.JButton();
         statuslbl = new javax.swing.JLabel();
         clientlbl = new javax.swing.JLabel();
-        outputlbl = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         guiListaClient = new javax.swing.JList();
         jButton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        outputlbl = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,8 +54,6 @@ public class GUI extends javax.swing.JFrame {
         statuslbl.setText("SERVER OFFLINE");
 
         clientlbl.setText("                        ");
-
-        outputlbl.setText("                            ");
 
         guiListaClient.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -75,6 +74,10 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        outputlbl.setColumns(20);
+        outputlbl.setRows(5);
+        jScrollPane2.setViewportView(outputlbl);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,6 +85,7 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(statuslbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -89,13 +93,11 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(clientlbl)
-                            .addComponent(outputlbl))
+                        .addComponent(clientlbl)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -109,8 +111,8 @@ public class GUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clientlbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(outputlbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -142,6 +144,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_guiListaClientValueChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        setOutputStatus(jTextField1.getText() + " @" + client.toString().split("/")[1] + "\n");
         server.send(client, jTextField1.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
     
@@ -154,7 +157,7 @@ public class GUI extends javax.swing.JFrame {
     }
     
     public void setOutputStatus(String status) {
-        outputlbl.setText(status);
+        outputlbl.append(status + "\n");
     }
     
     public void updateLista(HashMap<InetAddress, Socket> lista) {
@@ -167,8 +170,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JList guiListaClient;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel outputlbl;
+    private javax.swing.JTextArea outputlbl;
     private javax.swing.JLabel statuslbl;
     // End of variables declaration//GEN-END:variables
 }
