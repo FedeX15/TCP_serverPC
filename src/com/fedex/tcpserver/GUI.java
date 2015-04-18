@@ -146,6 +146,7 @@ public class GUI extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         setOutputStatus(jTextField1.getText() + " @" + client.toString().split("/")[1]);
         server.send(client, jTextField1.getText());
+        jTextField1.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
     
     public void setServerStatus(String status) {
