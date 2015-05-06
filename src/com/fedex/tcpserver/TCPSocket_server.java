@@ -14,6 +14,7 @@ public class TCPSocket_server
     public HashMap<InetAddress, Socket> listaClient;
     public boolean avviato;
     private ServerSocket socket;
+    private DatagramSocket discoverySocket;
     
     public TCPSocket_server() {
         gui = new GUI(this);
@@ -35,7 +36,10 @@ public class TCPSocket_server
         avviato = true;
         try {
             socket = new ServerSocket(8888);
-            gui.setServerStatus("SERVER ONLINE [" + socket.getLocalSocketAddress().toString() + "]");
+            discoverySocket = new DatagramSocket(8889);
+            discoverySocket.setBroadcast(true);
+            new Discovery(discoverySocket, this, gui).start();
+            gui.setServerStatus("SERVER ONLINE [" + InetAddress.getLocalHost().toString().split("/")[1] + "]");
             Socket socketcomm = null;
             do {
                 try {
@@ -43,7 +47,7 @@ public class TCPSocket_server
                     this.listaClient.put(socketcomm.getInetAddress(), socketcomm);
                     gui.updateLista(listaClient);
                     this.clientConnessi++;
-                    gui.setClientStatus("Client " + socketcomm.getInetAddress().toString() + " connesso\t[" + this.clientConnessi + "]");
+                    gui.setClientStatus("Client " + socketcomm.getInetAddress().toString().split("/")[1] + " connesso\t[" + this.clientConnessi + "]");
                     new TCPSocket_thread(socketcomm, this, gui).start();
                 } catch (SocketTimeoutException timeout) {
                     if (this.clientConnessi == 0) {
