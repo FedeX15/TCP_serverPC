@@ -1,7 +1,10 @@
 package com.fedex.tcpserver;
 
+import java.awt.*;
+import java.awt.event.*;
 import java.net.*;
 import java.util.*;
+import javax.swing.*;
 
 /**
  *
@@ -11,6 +14,7 @@ public class GUI extends javax.swing.JFrame {
 
     TCPSocket_server server;
     InetAddress client;
+    GUI gui;
     
     /**
      * Creates new form GUI
@@ -20,6 +24,7 @@ public class GUI extends javax.swing.JFrame {
         initComponents();
         this.server = server;
         this.client = null;
+        this.gui = this;
     }
 
     /**
@@ -41,6 +46,7 @@ public class GUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         outputlbl = new javax.swing.JTextArea();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,6 +84,13 @@ public class GUI extends javax.swing.JFrame {
         outputlbl.setRows(5);
         jScrollPane2.setViewportView(outputlbl);
 
+        jButton2.setText("_");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,21 +98,25 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(clientlbl)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(statuslbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(avviaBtn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(clientlbl)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(avviaBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)
+                        .addGap(8, 8, 8))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,7 +124,8 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(statuslbl)
-                    .addComponent(avviaBtn))
+                    .addComponent(avviaBtn)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clientlbl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -148,6 +166,47 @@ public class GUI extends javax.swing.JFrame {
         server.send(client, jTextField1.getText());
         jTextField1.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+            TrayIcon trayIcon = null;
+            if (SystemTray.isSupported()) {
+                // get the SystemTray instance
+                SystemTray tray = SystemTray.getSystemTray();
+                // load an image
+                Image image = Toolkit.getDefaultToolkit().getImage("C:\\Users\\Federico\\Documents\\TestApp\\app\\src\\main\\res\\drawable-mdpi\\ic_launcher.png");
+                
+                // create a popup menu
+                PopupMenu popup = new PopupMenu();
+                
+                MenuItem mostraItem = new MenuItem("Mostra");
+                ActionListener mostraListener = (ActionEvent e) -> {
+                    gui.setVisible(true);
+                };
+                mostraItem.addActionListener(mostraListener);
+                popup.add(mostraItem);
+                /// ... add other items
+                
+                // construct a TrayIcon
+                trayIcon = new TrayIcon(image, "Server", popup);
+                // set the TrayIcon properties
+                // trayIcon.addActionListener(mostraListener);
+                // ...
+                
+                // add the tray image
+                try {
+                    tray.add(trayIcon);
+                    this.setVisible(false);
+                } catch (AWTException e) {
+                    System.err.println(e);
+                }
+                // ...
+            } else {
+                // disable tray option in your application or perform other 
+                // actions
+                JButton btn = (JButton) evt.getSource();
+                btn.setEnabled(false);
+            }
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     public void setServerStatus(String status) {
         statuslbl.setText(status);
@@ -170,6 +229,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel clientlbl;
     private javax.swing.JList guiListaClient;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
