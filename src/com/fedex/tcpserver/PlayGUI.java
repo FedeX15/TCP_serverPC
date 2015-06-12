@@ -6,6 +6,9 @@
 package com.fedex.tcpserver;
 
 import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
 
 /**
  *
@@ -16,7 +19,7 @@ public class PlayGUI extends javax.swing.JFrame {
     /**
      * Creates new form PlayGUI
      */
-    public PlayGUI(int width, int height) {
+    public PlayGUI(int width, int height, String ip, DatagramSocket streamsocket) {
         initComponents();
         setSize(width, height);
         btnOpponent.setSize(new Dimension(100, 25));
@@ -24,6 +27,25 @@ public class PlayGUI extends javax.swing.JFrame {
         btnUser.setSize(100, 25);
         btnUser.setLocation(this.getWidth()/2 + btnUser.getWidth()/2, btnUser.getY());
         setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        this.addMouseMotionListener(new MouseAdapter() {
+            
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                int x = (int) (e.getX() - (btnUser.getWidth() / 2));
+                btnUser.setLocation(x, btnUser.getY());
+                final int n = x*3;
+                new Thread() {
+                    public void run() {
+                        try {
+                            byte[] sendData = ("" + n).getBytes();
+                            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 8890);
+                            streamsocket.send(sendPacket);
+                        } catch (IOException ex) {
+                        }
+                    }
+                }.start();
+            }
+        });
     }
 
     /**

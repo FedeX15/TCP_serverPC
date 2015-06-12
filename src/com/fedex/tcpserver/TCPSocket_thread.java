@@ -37,6 +37,7 @@ public class TCPSocket_thread extends Thread
                     gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Request: ServerInfo>");
                     server.send(InetAddress.getByName(this.getName().split("/")[1]), "Server " + (server.avviato ? "online" : "offline") + "|" + server.clientConnessi + " client");
                 } else if (input.equals("StartUDPStream")) {
+                    gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Service: UDPStreaming>");
                     DatagramSocket streamsocket = new DatagramSocket(8890);
                     byte[] recvBuf = new byte[1500];
                     DatagramPacket recvPacket = new DatagramPacket(recvBuf, recvBuf.length);
@@ -52,13 +53,14 @@ public class TCPSocket_thread extends Thread
                     streamgui.setVisible(false);
                     streamsocket.close();
                 } else if (input.startsWith("Play")) {
+                    gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Service: Pong>");
                     String str = input.split("&")[1];
                     int w = Integer.parseInt(str.split("-")[0]);
                     int h = Integer.parseInt(str.split("-")[1]);
                     DatagramSocket streamsocket = new DatagramSocket(8890);
                     byte[] recvBuf = new byte[1500];
                     DatagramPacket recvPacket = new DatagramPacket(recvBuf, recvBuf.length);
-                    PlayGUI playgui = new PlayGUI(w/2, h/2);
+                    PlayGUI playgui = new PlayGUI(w/3, h/3, this.getName().split("/")[1], streamsocket);
                     playgui.setVisible(true);
                     playgui.setBounds(this.gui.getX() + this.gui.getWidth()/2, this.gui.getY() + this.gui.getHeight()/2, playgui.getWidth(), playgui.getHeight());
                     String txt;
@@ -68,7 +70,7 @@ public class TCPSocket_thread extends Thread
                         txt = new String(recvBuf, 0, recvPacket.getLength());
                         try {
                             x = Integer.parseInt(txt);
-                            playgui.setOpponentPosition(x/2);
+                            playgui.setOpponentPosition(x/3);
                         } catch (NumberFormatException ex) {
                         }
                     } while (!txt.equals("Close"));
