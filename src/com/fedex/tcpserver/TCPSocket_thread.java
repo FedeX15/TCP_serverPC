@@ -32,14 +32,29 @@ public class TCPSocket_thread extends Thread
                     server.clientConnessi--;
                     server.listaClient.remove(socketcomm.getInetAddress());
                     gui.updateLista(server.listaClient);
-                    gui.setClientStatus("Client " + this.getName() + " disconnesso\t[" + server.clientConnessi + "]");
+                    gui.setClientStatus("Client " + this.getName().split("/")[1] + " disconnesso (Connessi: " + server.clientConnessi + ")");
+                } else if (input.equals("GetServerInfo")) {
+                    gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Request: ServerInfo>");
+                    server.send(InetAddress.getByName(this.getName().split("/")[1]), "Server " + (server.avviato ? "online" : "offline") + "|" + server.clientConnessi + " client");
+                } else if (input.equals("StreamCamera")) {
+                    DatagramSocket streamsocket = new DatagramSocket(8890);
+                    byte[] recvBuf = ("ready").getBytes();
+                    DatagramPacket recvPacket = new DatagramPacket(recvBuf, recvBuf.length, InetAddress.getByName(this.getName().split("/")[1]), 8890);
+                    StreamGUI streamgui = new StreamGUI();
+                    streamgui.setVisible(true);
+                    String txt;
+                    do {
+                        streamsocket.receive(recvPacket);
+                        txt = new String(recvBuf, 0, recvPacket.getLength());
+                        streamgui.setText(txt);
+                    } while (!txt.equals("Close"));
+                    streamgui.setVisible(false);
+                    streamsocket.close();
                 } else {
-                    gui.setOutputStatus(this.getName() + "_>" + input);
+                    gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + input);
                 }
-                sleep(1000);
             } catch (IOException ex) {
-            } catch (InterruptedException ex) {
             }
-        } while (!socketcomm.isClosed());
+        } while (!socketcomm.isClosed() && server.avviato);
     }
 }

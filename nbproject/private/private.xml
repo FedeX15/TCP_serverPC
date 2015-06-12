@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Federico/Documents/TCPSocket_server/src/com/fedex/school/tcpserver/GUI.java</file>
-            <file>file:/C:/Users/Federico/Documents/TCPSocket_server/src/com/fedex/school/tcpserver/TCPSocket_thread.java</file>
-            <file>file:/C:/Users/Federico/Documents/TCPSocket_server/src/com/fedex/school/tcpserver/TCPSocket_server.java</file>
+            <file>file:/C:/Users/Federico/Documents/TCPSocket_server/src/com/fedex/tcpserver/TCPSocket_server.java</file>
+            <file>file:/C:/Users/Federico/Documents/TCPSocket_server/src/com/fedex/tcpserver/GUI.java</file>
+            <file>file:/C:/Users/Federico/Documents/TCPSocket_server/src/com/fedex/tcpserver/Discovery.java</file>
+            <file>file:/C:/Users/Federico/Documents/TCPSocket_server/src/com/fedex/tcpserver/TCPSocket_thread.java</file>
         </group>
     </open-files>
 </project-private>

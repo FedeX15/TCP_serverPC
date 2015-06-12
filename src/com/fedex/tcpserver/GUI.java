@@ -168,7 +168,6 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-            TrayIcon trayIcon = null;
             if (SystemTray.isSupported()) {
                 // get the SystemTray instance
                 SystemTray tray = SystemTray.getSystemTray();
@@ -180,6 +179,7 @@ public class GUI extends javax.swing.JFrame {
                 
                 MenuItem mostraItem = new MenuItem("Mostra");
                 ActionListener mostraListener = (ActionEvent e) -> {
+                    tray.remove(trayIcon);
                     gui.setVisible(true);
                 };
                 mostraItem.addActionListener(mostraListener);
@@ -218,12 +218,18 @@ public class GUI extends javax.swing.JFrame {
     
     public void setOutputStatus(String status) {
         outputlbl.append(status + "\n");
+        try {
+            trayIcon.displayMessage("", status, TrayIcon.MessageType.NONE);
+        } catch (NullPointerException ex) {
+        }
+        
     }
     
     public void updateLista(HashMap<InetAddress, Socket> lista) {
         this.guiListaClient.setListData(lista.keySet().toArray());
     }
     
+    private TrayIcon trayIcon;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton avviaBtn;
     private javax.swing.JLabel clientlbl;

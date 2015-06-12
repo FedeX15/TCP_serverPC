@@ -20,22 +20,22 @@ public class Discovery extends Thread
     
     @Override
     public void run() {
-        System.out.println("Discovery avviato");
+        gui.setOutputStatus("[Discovery] Avviato");
         do {
             try {
                 byte[] recvBuf = new byte[15000];
                 DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
                 socket.receive(packet);
-                
-                //if (recvBuf.toString().equals("SocketTest_discovery")) {
-                    System.out.println("Ricevuto" + packet.getAddress().toString());
+                if (new String(recvBuf, 0, packet.getLength()).equals("SocketTest_discovery")) {
+                    gui.setOutputStatus("[Discovery] Ricevuto " + packet.getAddress().toString().split("/")[1]);
                     byte[] sendData = ("SocketTest&" + InetAddress.getLocalHost().toString()).getBytes();
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), 8889);
                     socket.send(sendPacket);
-                //}
+                }
             } catch (IOException ex) {
             }
-        } while (true);
+        } while (!socket.isClosed());
+        gui.setOutputStatus("[Discovery] Fermato");
     }
     //server.send(socketcomm.getInetAddress(), "SocketTest&" + InetAddress.getLocalHost().toString());
 }
