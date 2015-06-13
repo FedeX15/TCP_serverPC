@@ -60,9 +60,9 @@ public class TCPSocket_thread extends Thread
                     DatagramSocket streamsocket = new DatagramSocket(8890);
                     byte[] recvBuf = new byte[1500];
                     DatagramPacket recvPacket = new DatagramPacket(recvBuf, recvBuf.length);
-                    PlayGUI playgui = new PlayGUI(w/3, h/3, this.getName().split("/")[1], streamsocket);
+                    PlayGUI playgui = new PlayGUI(w, h, this.getName().split("/")[1], streamsocket);
                     playgui.setVisible(true);
-                    playgui.setBounds(this.gui.getX() + this.gui.getWidth()/2, this.gui.getY() + this.gui.getHeight()/2, playgui.getWidth(), playgui.getHeight());
+                    playgui.setBounds(this.gui.getX(), this.gui.getY(), playgui.getWidth(), playgui.getHeight());
                     String txt;
                     int x;
                     do {
@@ -75,6 +75,7 @@ public class TCPSocket_thread extends Thread
                         }
                     } while (!txt.equals("Close"));
                     playgui.setVisible(false);
+                    playgui.play = false;
                     streamsocket.close();
                 } else {
                     gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + input);

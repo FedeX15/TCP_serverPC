@@ -5,47 +5,89 @@
  */
 package com.fedex.tcpserver;
 
-import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 /**
  *
  * @author Federico
  */
 public class PlayGUI extends javax.swing.JFrame {
+    public boolean play;
 
     /**
      * Creates new form PlayGUI
      */
     public PlayGUI(int width, int height, String ip, DatagramSocket streamsocket) {
         initComponents();
-        setSize(width, height);
-        btnOpponent.setSize(new Dimension(100, 25));
-        btnOpponent.setLocation(this.getWidth()/2 + btnOpponent.getWidth()/2, btnOpponent.getY());
-        btnUser.setSize(100, 25);
-        btnUser.setLocation(this.getWidth()/2 + btnUser.getWidth()/2, btnUser.getY());
+        setSize(width/3, height/3);
+        play = true;
+        btnOpponent.setSize((((width/3)*10)/100), 25);
+        //btnOpponent.setLocation(this.getWidth()/2 + btnOpponent.getWidth()/2, btnOpponent.getY());
+        btnUser.setSize((((width/3)*10)/100), 25);
+        //btnUser.setLocation(this.getWidth()/2 + btnUser.getWidth()/2, btnUser.getY());
+        ball.setLocation(width/2, height/2);
         setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         this.addMouseMotionListener(new MouseAdapter() {
-            
             @Override
             public void mouseDragged(MouseEvent e) {
                 int x = (int) (e.getX() - (btnUser.getWidth() / 2));
+                int xp = e.getX();
+                int yp = e.getY();
                 btnUser.setLocation(x, btnUser.getY());
                 final int n = x*3;
                 new Thread() {
                     public void run() {
                         try {
-                            byte[] sendData = ("" + n).getBytes();
+                            byte[] sendData = ("Opponent&" + n).getBytes();
                             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 8890);
                             streamsocket.send(sendPacket);
+                            /*sendData = ("Ball&" + xp*3 + "-" + yp*3).getBytes();
+                            sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 8890);
+                            streamsocket.send(sendPacket);*/
                         } catch (IOException ex) {
                         }
                     }
                 }.start();
             }
         });
+        int width2 = getContentPane().getWidth();
+        int height2 = getContentPane().getHeight();
+        new Thread() {
+            public void run() {
+                int x = ball.getX();
+                int y = ball.getY();
+                int xc = 0;
+                int yc = 2;
+                Random rnd = new Random();
+                do {
+                    if (ball.getX() < 0) xc = 2;
+                    if (ball.getX() > (width2)) xc = -2;
+                    if (ball.getY() < 0) yc = 2;
+                    if (ball.getY() > (height2)) yc = -2;
+                    if (ball.getBounds().intersects(btnUser.getBounds())) {
+                        yc = -2;
+                        xc = rnd.nextInt(3);
+                    }
+                    if (ball.getBounds().intersects(btnOpponent.getBounds())) {
+                        yc = 2;
+                        xc = -rnd.nextInt(3);
+                    }
+                    x = x + xc;
+                    y = y + yc;
+                    ball.setLocation(x, y);
+                    try {
+                        byte[] sendData = ("Ball&" + x*3 + "-" + y*3).getBytes();
+                        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 8890);
+                        streamsocket.send(sendPacket);
+                        sleep(10);
+                    } catch (InterruptedException | IOException ex) {
+                    }
+                } while (play);
+            }
+        }.start();
     }
 
     /**
@@ -60,6 +102,7 @@ public class PlayGUI extends javax.swing.JFrame {
 
         btnUser = new javax.swing.JButton();
         btnOpponent = new javax.swing.JButton();
+        ball = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,6 +113,7 @@ public class PlayGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ball)
                     .addComponent(btnUser)
                     .addComponent(btnOpponent))
                 .addContainerGap(354, Short.MAX_VALUE))
@@ -79,7 +123,9 @@ public class PlayGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnOpponent)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+                .addGap(114, 114, 114)
+                .addComponent(ball)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                 .addComponent(btnUser)
                 .addContainerGap())
         );
@@ -92,6 +138,7 @@ public class PlayGUI extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton ball;
     private javax.swing.JButton btnOpponent;
     private javax.swing.JButton btnUser;
     // End of variables declaration//GEN-END:variables

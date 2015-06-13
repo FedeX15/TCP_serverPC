@@ -23,9 +23,10 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="ball" min="-2" max="-2" attributes="0"/>
                   <Component id="btnUser" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="btnOpponent" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -38,7 +39,9 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnOpponent" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="258" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+              <Component id="ball" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="123" max="32767" attributes="0"/>
               <Component id="btnUser" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -49,6 +52,8 @@
     <Component class="javax.swing.JButton" name="btnUser">
     </Component>
     <Component class="javax.swing.JButton" name="btnOpponent">
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="ball">
     </Component>
   </SubComponents>
 </Form>
