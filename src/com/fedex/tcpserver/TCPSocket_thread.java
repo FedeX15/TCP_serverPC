@@ -11,6 +11,7 @@ public class TCPSocket_thread extends Thread
     private Socket socketcomm;
     private TCPSocket_server server;
     private GUI gui;
+    private StreamGUI streamgui = null;
     
     public TCPSocket_thread (Socket socketcomm, TCPSocket_server server, GUI gui) {
         super(socketcomm.getInetAddress().toString());
@@ -41,16 +42,20 @@ public class TCPSocket_thread extends Thread
                     DatagramSocket streamsocket = new DatagramSocket(8890);
                     byte[] recvBuf = new byte[1500];
                     DatagramPacket recvPacket = new DatagramPacket(recvBuf, recvBuf.length);
-                    StreamGUI streamgui = new StreamGUI();
+                    if (streamgui == null) {
+                        streamgui = new StreamGUI();
+                    }
                     streamgui.setVisible(true);
                     streamgui.setBounds(this.gui.getX() + this.gui.getWidth()/2, this.gui.getY() + this.gui.getHeight()/2, streamgui.getWidth(), streamgui.getHeight());
                     String txt;
                     do {
                         streamsocket.receive(recvPacket);
                         txt = new String(recvBuf, 0, recvPacket.getLength());
-                        streamgui.setText(txt);
+                        if (!txt.equals("Close")) {
+                            streamgui.setText(txt); 
+                        }
                     } while (!txt.equals("Close"));
-                    streamgui.setVisible(false);
+                    //streamgui.setVisible(false);
                     streamsocket.close();
                 } else if (input.startsWith("Play")) {
                     gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Service: Pong>");
