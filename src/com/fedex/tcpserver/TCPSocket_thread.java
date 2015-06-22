@@ -1,5 +1,7 @@
 package com.fedex.tcpserver;
 
+import com.sun.glass.events.*;
+import java.awt.*;
 import java.io.*;
 import java.net.*;
 
@@ -82,6 +84,21 @@ public class TCPSocket_thread extends Thread
                     playgui.setVisible(false);
                     playgui.play = false;
                     streamsocket.close();
+                } else if (input.startsWith("Key")) {
+                    try {
+                        Robot robot = new Robot();
+                        String str = input.split("&")[1];
+                        gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Key: " + str + ">");
+                        
+                        if (str.equals("Avanti")) {
+                            robot.keyPress(KeyEvent.VK_RIGHT);
+                            robot.keyRelease(KeyEvent.VK_RIGHT);
+                        }
+                        if (str.endsWith("Indietro")) {
+                            robot.keyPress(KeyEvent.VK_LEFT);
+                            robot.keyRelease(KeyEvent.VK_LEFT);
+                        }
+                    } catch (AWTException ex) {}
                 } else {
                     gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + input);
                 }
