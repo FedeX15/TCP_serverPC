@@ -144,10 +144,10 @@ public class GUI extends javax.swing.JFrame {
 
     private void avviaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avviaBtnActionPerformed
         if (server.avviato) {
-            this.avviaBtn.setText("Avvia Server");
+            this.avviaBtn.setText("Start Server");
             server.chiudiServer();
         } else {
-            this.avviaBtn.setText("Arresta Server");
+            this.avviaBtn.setText("Stop Server");
             new Thread() {
                 @Override
                 public void run() {
@@ -177,7 +177,7 @@ public class GUI extends javax.swing.JFrame {
                 // create a popup menu
                 PopupMenu popup = new PopupMenu();
                 
-                MenuItem mostraItem = new MenuItem("Mostra");
+                MenuItem mostraItem = new MenuItem("Show");
                 ActionListener mostraListener = (ActionEvent e) -> {
                     tray.remove(trayIcon);
                     gui.setVisible(true);
