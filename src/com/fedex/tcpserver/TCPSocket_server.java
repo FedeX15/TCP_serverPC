@@ -7,8 +7,7 @@ import java.util.*;
 /**
  * @author Federico Matteoni
  */
-public class TCPSocket_server
-{
+public class TCPSocket_server {
     GUI gui;
     public int clientConnessi;
     public HashMap<InetAddress, Socket> listaClient;
@@ -78,7 +77,6 @@ public class TCPSocket_server
             DataOutputStream outstream = new DataOutputStream(theoutstream);
             outstream.writeBytes(text + "\n");
         } catch (NullPointerException ex) {
-        } catch (IOException ex) {
-        }
+        } catch (IOException ex) {}
     }
 }

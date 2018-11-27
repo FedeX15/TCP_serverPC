@@ -8,8 +8,7 @@ import java.net.*;
 /**
  * @author Federico Matteoni
  */
-public class TCPSocket_thread extends Thread
-{
+public class TCPSocket_thread extends Thread {
     private Socket socketcomm;
     private TCPSocket_server server;
     private GUI gui;

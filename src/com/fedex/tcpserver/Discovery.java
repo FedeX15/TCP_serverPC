@@ -6,8 +6,7 @@ import java.net.*;
 /**
  * @author Federico Matteoni
  */
-public class Discovery extends Thread
-{
+public class Discovery extends Thread {
     private DatagramSocket socket;
     private TCPSocket_server server;
     private GUI gui;
