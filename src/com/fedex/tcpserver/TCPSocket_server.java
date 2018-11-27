@@ -47,7 +47,7 @@ public class TCPSocket_server {
                     this.listaClient.put(socketcomm.getInetAddress(), socketcomm);
                     gui.updateLista(listaClient);
                     this.clientConnessi++;
-                    gui.setClientStatus("Client " + socketcomm.getInetAddress().toString().split("/")[1] + " connesso (Connessi: " + this.clientConnessi + ")");
+                    gui.setClientStatus("Client " + socketcomm.getInetAddress().toString().split("/")[1] + " connected (" + this.clientConnessi + " connected)");
                     new TCPSocket_thread(socketcomm, this, gui).start();
                 } catch (SocketTimeoutException timeout) {
                     if (this.clientConnessi == 0) {
@@ -67,7 +67,7 @@ public class TCPSocket_server {
             socket.close();
             discoverySocket.close();
             gui.setServerStatus("SERVER OFFLINE");
-            gui.setOutputStatus("[Server] Fermato");
+            gui.setOutputStatus("[Server] Stopped");
         } catch (IOException ex) {}
     }
     

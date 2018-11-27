@@ -34,7 +34,7 @@ public class TCPSocket_thread extends Thread {
                     server.clientConnessi--;
                     server.listaClient.remove(socketcomm.getInetAddress());
                     gui.updateLista(server.listaClient);
-                    gui.setClientStatus("Client " + this.getName().split("/")[1] + " disconnesso (Connessi: " + server.clientConnessi + ")");
+                    gui.setClientStatus("Client " + this.getName().split("/")[1] + " disconnected (" + server.clientConnessi + " connected)");
                 } else if (input.equals("GetServerInfo")) {
                     gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Request: ServerInfo>");
                     server.send(InetAddress.getByName(this.getName().split("/")[1]), "Server " + (server.avviato ? "online" : "offline") + "|" + server.clientConnessi + " client");

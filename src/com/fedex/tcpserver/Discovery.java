@@ -19,14 +19,14 @@ public class Discovery extends Thread {
     
     @Override
     public void run() {
-        gui.setOutputStatus("[Discovery] Avviato");
+        gui.setOutputStatus("[Discovery] Launched");
         do {
             try {
                 byte[] recvBuf = new byte[15000];
                 DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
                 socket.receive(packet);
                 if (new String(recvBuf, 0, packet.getLength()).equals("SocketTest_discovery")) {
-                    gui.setOutputStatus("[Discovery] Ricevuto " + packet.getAddress().toString().split("/")[1]);
+                    gui.setOutputStatus("[Discovery] Received " + packet.getAddress().toString().split("/")[1]);
                     byte[] sendData = ("SocketTest&" + InetAddress.getLocalHost().toString()).getBytes();
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), 8889);
                     socket.send(sendPacket);
@@ -34,7 +34,7 @@ public class Discovery extends Thread {
             } catch (IOException ex) {
             }
         } while (!socket.isClosed());
-        gui.setOutputStatus("[Discovery] Fermato");
+        gui.setOutputStatus("[Discovery] Stopped");
     }
     //server.send(socketcomm.getInetAddress(), "SocketTest&" + InetAddress.getLocalHost().toString());
 }
