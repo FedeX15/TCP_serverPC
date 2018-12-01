@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import static java.net.InetAddress.getLocalHost;
 import java.util.*;
+import javax.sound.midi.SysexMessage;
 
 /**
  * @author Federico Matteoni
@@ -15,6 +16,7 @@ public class TCPSocket_server {
     public boolean avviato;
     private ServerSocket socket;
     private DatagramSocket discoverySocket;
+    static public long startTime;
     
     public TCPSocket_server() {
         gui = new GUI(this);
@@ -34,7 +36,8 @@ public class TCPSocket_server {
     
     public void avviaServer() {
         avviato = true;
-        gui.setOutputStatus("[Server] Avviato");
+        TCPSocket_server.startTime = System.nanoTime();
+        gui.setOutputStatus("[" + (System.nanoTime() - TCPSocket_server.startTime)/1000000 + " Server] Launched");
         try {
             socket = new ServerSocket(8888);
             discoverySocket = new DatagramSocket(8889);
@@ -48,7 +51,7 @@ public class TCPSocket_server {
                     this.listaClient.put(socketcomm.getInetAddress(), socketcomm);
                     gui.updateLista(listaClient);
                     this.clientConnessi++;
-                    gui.setClientStatus("Client " + socketcomm.getInetAddress().toString().split("/")[1] + " connected (" + this.clientConnessi + " connected)");
+                    gui.setClientStatus((System.nanoTime() - TCPSocket_server.startTime)/1000000 + " Client " + socketcomm.getInetAddress().toString().split("/")[1] + " connected (" + this.clientConnessi + " connected)");
                     new TCPSocket_thread(socketcomm, this, gui).start();
                 } catch (SocketTimeoutException timeout) {
                     if (this.clientConnessi == 0) {

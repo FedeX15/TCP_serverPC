@@ -19,14 +19,14 @@ public class Discovery extends Thread {
     
     @Override
     public void run() {
-        gui.setOutputStatus("[Discovery] Launched");
+        gui.setOutputStatus("[" + (System.nanoTime() - TCPSocket_server.startTime)/1000000 + " Discovery] Launched");
         do {
             try {
                 byte[] recvBuf = new byte[15000];
                 DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
                 socket.receive(packet);
                 if (new String(recvBuf, 0, packet.getLength()).equals("SocketTest_discovery")) {
-                    gui.setOutputStatus("[Discovery] Received " + packet.getAddress().toString().split("/")[1]);
+                    gui.setOutputStatus("[" + (System.nanoTime() - TCPSocket_server.startTime)/1000000 + " Discovery] Received " + packet.getAddress().toString().split("/")[1]);
                     byte[] sendData = ("SocketTest&" + InetAddress.getLocalHost().toString()).getBytes();
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), 8889);
                     socket.send(sendPacket);

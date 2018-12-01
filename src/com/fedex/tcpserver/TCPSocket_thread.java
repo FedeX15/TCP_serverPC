@@ -20,6 +20,7 @@ public class TCPSocket_thread extends Thread {
         this.server = server;
         this.gui = gui;
     }    
+    
     @Override
     public void run() {
         String input;
@@ -36,10 +37,10 @@ public class TCPSocket_thread extends Thread {
                     gui.updateLista(server.listaClient);
                     gui.setClientStatus("Client " + this.getName().split("/")[1] + " disconnected (" + server.clientConnessi + " connected)");
                 } else if (input.equals("GetServerInfo")) {
-                    gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Request: ServerInfo>");
+                    gui.setOutputStatus("[" + (System.nanoTime() - TCPSocket_server.startTime)/1000000 + " " + this.getName().split("/")[1] + "] " + "<Request: ServerInfo>");
                     server.send(InetAddress.getByName(this.getName().split("/")[1]), "Server " + (server.avviato ? "online" : "offline") + "|" + server.clientConnessi + " client");
                 } else if (input.equals("StartUDPStream")) {
-                    gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Service: UDPStreaming>");
+                    gui.setOutputStatus("[" + (System.nanoTime() - TCPSocket_server.startTime)/1000000 + " " + this.getName().split("/")[1] + "] " + "<Service: UDPStreaming>");
                     DatagramSocket streamsocket = new DatagramSocket(8890);
                     byte[] recvBuf = new byte[1500];
                     DatagramPacket recvPacket = new DatagramPacket(recvBuf, recvBuf.length);
@@ -59,7 +60,7 @@ public class TCPSocket_thread extends Thread {
                     //streamgui.setVisible(false);
                     streamsocket.close();
                 } else if (input.startsWith("Play")) {
-                    gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Service: Pong>");
+                    gui.setOutputStatus("[" + (System.nanoTime() - TCPSocket_server.startTime)/1000000 + " " + this.getName().split("/")[1] + "] " + "<Service: Pong>");
                     String str = input.split("&")[1];
                     int w = Integer.parseInt(str.split("-")[0]);
                     int h = Integer.parseInt(str.split("-")[1]);
@@ -87,7 +88,7 @@ public class TCPSocket_thread extends Thread {
                     try {
                         Robot robot = new Robot();
                         String str = input.split("&")[1];
-                        gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + "<Key: " + str + ">");
+                        gui.setOutputStatus("[" + (System.nanoTime() - TCPSocket_server.startTime)/1000000 + " " + this.getName().split("/")[1] + "] " + "<Key: " + str + ">");
                         
                         if (str.equals("Avanti")) {
                             robot.keyPress(KeyEvent.VK_RIGHT);
@@ -99,7 +100,7 @@ public class TCPSocket_thread extends Thread {
                         }
                     } catch (AWTException ex) {}
                 } else {
-                    gui.setOutputStatus("[" + this.getName().split("/")[1] + "] " + input);
+                    gui.setOutputStatus("[" + (System.nanoTime() - TCPSocket_server.startTime)/1000000 + " " + this.getName().split("/")[1] + "] " + input);
                 }
             } catch (IOException ex) {
             }

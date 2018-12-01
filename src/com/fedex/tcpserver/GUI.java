@@ -47,10 +47,11 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         outputlbl = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
+        bytelbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        avviaBtn.setText("Avvia Server");
+        avviaBtn.setText("Launch Server");
         avviaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 avviaBtnActionPerformed(evt);
@@ -107,7 +108,8 @@ public class GUI extends javax.swing.JFrame {
                                 .addComponent(jButton1))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(clientlbl)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(bytelbl))
                             .addComponent(jScrollPane1))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
@@ -127,7 +129,9 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(avviaBtn)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(clientlbl)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clientlbl)
+                    .addComponent(bytelbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -232,6 +236,7 @@ public class GUI extends javax.swing.JFrame {
     private TrayIcon trayIcon;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton avviaBtn;
+    private javax.swing.JLabel bytelbl;
     private javax.swing.JLabel clientlbl;
     private javax.swing.JList guiListaClient;
     private javax.swing.JButton jButton1;
